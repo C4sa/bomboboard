@@ -3,8 +3,23 @@ import os
 
 # vars
 board = [i for i in range(1, 31)]
-lucky_tiles = [i for i in range(1, 31)]
-all_figures = ['*', '!', '>', '<', '#', '$', '%', 'Σ']
+
+# lucky tile gen
+def generate_lucky_tiles():
+    lucky_tiles = []
+    current_tile = 3
+
+    while len(lucky_tiles) < random.randint(6, 7):
+        if current_tile >= 27:
+            break
+        lucky_tiles.append(current_tile)
+        current_tile += random.randint(3, 6)
+    
+    return lucky_tiles
+
+lucky_tiles = generate_lucky_tiles()
+
+all_figures = ['*', '!', '/', '>', '<', '#', '$', '%', 'Σ']
 available_figures = all_figures
 
 questions = {
@@ -32,10 +47,10 @@ questions = {
 }
 
 lucky_cards = [
-    {"message": "You found a shortcut! Move forward", "effect": lambda: random.randint(1, 4)},
-    {"message": "You forgot your homework. Move backward", "effect": lambda: -random.randint(1, 3)},
-    {"message": "A friendly dog guides you forward. Move forward", "effect": lambda: random.randint(1, 4)},
-    {"message": "You tripped on a rock. Move backward", "effect": lambda: -random.randint(1, 3)}
+    {"message": "You found a shortcut!", "effect": lambda: random.randint(1, 4)},
+    {"message": "You forgot your homework.", "effect": lambda: -random.randint(1, 3)},
+    {"message": "A friendly dog guides you forward.", "effect": lambda: random.randint(1, 4)},
+    {"message": "You tripped on a rock.", "effect": lambda: -random.randint(1, 3)}
 ]
 
 # Colors
@@ -51,7 +66,7 @@ def green(str):
 def yellow(str):
     return col(str, 33)
     
-def cyan(str):
+def blue(str):
     return col(str, 34)
 
 def magenta(str):
@@ -98,7 +113,7 @@ def draw_board(board, players):
         elif tile_number <= 20: color_func = yellow
         else: color_func = red
 
-        if tile_number in lucky_cards: color_func = magenta
+        if tile_number in lucky_tiles: color_func = blue
 
         if players["p1"]["pos"] == i and players["p2"]["pos"] == i:
             board[i] = color_func(f"[{players['p1']['figure']}{players['p2']['figure']}{tile_number}]")
@@ -151,7 +166,7 @@ def ask_question(display, id, difficulty):
 
         print('')
         print(green(msg))
-        input(red("Press [ENTER] to continue..."))
+        input(green("Press [ENTER] to continue..."))
         return True
     else:
         msg = random.choice(["I diagnose you with skill issue.", "Incorrect. L", "MI BOMBOCLAT (incorrect)", "That question got the best of you.", "Take this personally. (incorrect)"])
@@ -161,11 +176,21 @@ def ask_question(display, id, difficulty):
         input(red("Press [ENTER] to continue..."))
         return False
 
-def draw_lucky_card(player):
+def draw_lucky_card(player, board, players):
+    draw_board(board, players)
     card = random.choice(lucky_cards)
     effect = card["effect"]()
-    print(f"{player} landed on a lucky tile! {card['message']} {abs(effect)} step(s).")
-    
+    #print(magenta(f"{player} landed on a lucky tile! {card['message']} {abs(effect)} step(s)."))
+    print(magenta(f"{player} landed on a lucky tile!"))
+    print(card["message"])
+
+    if effect > 0: color_func = green; dir_word = "forward"
+    elif effect < 0: color_func = red; dir_word = "back"
+
+    value = abs(effect)
+    print(color_func(f"Move {dir_word} {value} tile(s)."))
+
+    input(blue("\nPress [ENTER] to continue..."))
     return effect
 
 def clear():
@@ -183,6 +208,8 @@ players = {
         "display_name": None
     }
 }
+
+print(magenta("Welcome to BOMBOBOARD!\n"))
 
 choose_name("p1")
 choose_figure("p1")
@@ -207,20 +234,19 @@ def main_loop():
             elif position < 21: difficulty = "medium"
             else: difficulty = "hard"
 
-            #print(f"@@@ board length: {len(board)}")
-
             # ask a question
             if ask_question(display_name, player_key, difficulty):
                 if difficulty == "easy": player_data["pos"] += 2
                 elif difficulty == "medium": player_data["pos"] += 2
                 else: player_data["pos"] += 3
             else:
-                if difficulty == "hard": player_data["pos"] -= 1  
+                if difficulty == "hard": player_data["pos"] -= 1
+
+            draw_board(board, players)
 
             # check for lucky tiles
-            if player_data["pos"] in lucky_tiles:
-                print("@@@ lucky tile!!!!")
-                effect = draw_lucky_card(display_name)
+            if player_data["pos"]+1 in lucky_tiles:
+                effect = draw_lucky_card(display_name, board, players)
                 player_data["pos"] = max(0, min(player_data["pos"] + effect, max_tile - 1))
 
             # check for wins
@@ -229,7 +255,7 @@ def main_loop():
                 fig = player_data["figure"]
                 print(green(f"{display_name} ({fig}) has won the game! GGs!"))
 
-                input('Press [ENTER] to exit... ')
+                input(green('Press [ENTER] to exit... '))
                 return
 
 main_loop()
