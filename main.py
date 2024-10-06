@@ -25,35 +25,42 @@ available_figures = all_figures
 questions = {
     "easy": [
         {
-            "question": "E1",
-            "choices": ["A) This is incorrect", "B) This too", "C) I am correct!", "D) C is correct"],
+            "question": "How many generations of computers are there (including the current one)?",
+            "choices": ["A) 7", "B) 5", "C) 6", "D) 4"],
             "answer": "C"
         }
     ],
     "medium": [
         {
-            "question": "M1 - your mom",
-            "choices": ["A) no u", "B) correct", "C) incorrect"],
+            "question": "What does CPU stand for?",
+            "choices": ["A) Central Performance Unit", "B) Central Processing Unit", "C) Central Processing Utility", "D) Core Processing Unit"],
             "answer": "B"
         }
     ],
     "hard": [
         {
-            "question": "H1 - vewy hawd",
-            "choices": ["A) this is easy", "B) no it's not", "C) what?", "D) pick me please"],
-            "answer": "D"
+            "question": "Out of these options, which one ISN't an abbreviation for a type of a memory card?",
+            "choices": ["A) BIOS", "B) MMC", "C) SD", "D) CF"],
+            "answer": "A"
         }
     ]
 }
 
 lucky_cards = [
-    {"message": "You found a shortcut!", "effect": lambda: random.randint(1, 4)},
-    {"message": "You forgot your homework.", "effect": lambda: -random.randint(1, 3)},
-    {"message": "A friendly dog guides you forward.", "effect": lambda: random.randint(1, 4)},
-    {"message": "You tripped on a rock.", "effect": lambda: -random.randint(1, 3)}
+    # positives
+    {"message": "You passed the sectoral basic exam!", "effect": lambda: random.randint(1, 3)},
+    {"message": "You hop into your superior gaming chair, and speed up.", "effect": lambda: random.randint(1, 2)},
+    {"message": "You chug three bottles of XIXO, and feel the power rushing through your veins.", "effect": lambda: random.randint(1, 5)},
+    {"message": "Listening to Avatar has brought you power!", "effect": lambda: random.randint(1, 3)},
+    {"message": "You are sprinting in order to catch your bus.", "effect": lambda: random.randint(1, 4)},
+
+    # negatives
+    {"message": "You didn't score enough points on your IT test.", "effect": lambda: -random.randint(1, 3)},
+    {"message": "You brought your backpack in the classroom, and your IKT teacher tripped over in it. He got mad, and roundhouse kicked you in the head.", "effect": lambda: -random.randint(1, 4)},
+    {"message": "You listened to too much generic NPC music, and are now dazed and confused.", "effect": lambda: -random.randint(1, 4)}
 ]
 
-# Colors
+# colors
 def gray(str):
     return col(str, 30)
 
@@ -180,7 +187,6 @@ def draw_lucky_card(player, board, players):
     draw_board(board, players)
     card = random.choice(lucky_cards)
     effect = card["effect"]()
-    #print(magenta(f"{player} landed on a lucky tile! {card['message']} {abs(effect)} step(s)."))
     print(magenta(f"{player} landed on a lucky tile!"))
     print(card["message"])
 
@@ -251,6 +257,7 @@ def main_loop():
 
             # check for wins
             if player_data["pos"] >= max_tile - 1:
+                player_data["pos"] = max_tile - 1
                 draw_board(board, players)
                 fig = player_data["figure"]
                 print(green(f"{display_name} ({fig}) has won the game! GGs!"))
