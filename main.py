@@ -1,7 +1,7 @@
 import random
 import os
 
-# vars
+# vars (test commit from laptop)
 board = [i for i in range(1, 31)]
 
 # lucky tile gen
