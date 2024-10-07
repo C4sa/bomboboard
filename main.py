@@ -27,21 +27,42 @@ questions = {
         {
             "question": "How many generations of computers are there (including the current one)?",
             "choices": ["A) 7", "B) 5", "C) 6", "D) 4"],
-            "answer": "C"
+            "answer": "C",
+            "creator": "JB"
+        },
+        {
+            "question": "What is the primary function of the motherboard in a computer?",
+            "choices": ["A) Storing data long-term", "B) Providing a surface for cooling systems", "C) Hosting the CPU and other key components", "D) Connecting the computer to the internet"],
+            "answer": "C",
+            "creator": "KP"
+        },
+        {
+            "question": "What type of memory is used for frequently accessed data and improves processing speed?",
+            "choices": ["A) ROM", "B) Cache memory", "C) Hard disk", "D) USB drive"],
+            "answer": "B",
+            "creator": "RA"
+        },
+        {
+            "question": "Which type of storage device was primarily used to store data in early computers?",
+            "choices": ["A) CD-ROM", "B) USB flash drive", "C) Blu-ray", "D) Punch card"],
+            "answer": "D",
+            "creator": "BG"
         }
     ],
     "medium": [
         {
             "question": "What does CPU stand for?",
             "choices": ["A) Central Performance Unit", "B) Central Processing Unit", "C) Central Processing Utility", "D) Core Processing Unit"],
-            "answer": "B"
+            "answer": "B",
+            "creator": "BG"
         }
     ],
     "hard": [
         {
             "question": "Out of these options, which one ISN't an abbreviation for a type of a memory card?",
             "choices": ["A) BIOS", "B) MMC", "C) SD", "D) CF"],
-            "answer": "A"
+            "answer": "A",
+            "creator": "RA"
         }
     ]
 }
@@ -157,6 +178,9 @@ def ask_question(display, id, difficulty):
     # display choices
     for choice in question["choices"]:
         print(color_func(choice))
+
+    creator = question["creator"]
+    print(gray(f"Question by {creator}"))
     
     answer = input(cyan("\nEnter your answer (A, B, C, or D): ")).upper()
     
@@ -236,8 +260,8 @@ def main_loop():
             draw_board(board, players)
 
             position = player_data["pos"]
-            if position < 11: difficulty = "easy"
-            elif position < 21: difficulty = "medium"
+            if position < 12: difficulty = "easy"
+            elif position < 22: difficulty = "medium"
             else: difficulty = "hard"
 
             # ask a question
