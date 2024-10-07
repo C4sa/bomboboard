@@ -56,7 +56,7 @@ questions = {
         },
         {
             "question": "Which component is responsible for connecting the CPU to RAM and other high-speed components?",
-            "choices": ["A) Southbridge", "B) Northbridge", "C) Power Supply", "D) PCI slot"],
+            "choices": ["A) Southbridge", "B) FSB", "C) Power Supply", "D) PCI slot"],
             "answer": "B",
             "creator": "JB"
         }
