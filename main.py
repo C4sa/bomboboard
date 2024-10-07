@@ -388,6 +388,7 @@ def welcome():
      |____/ \____/|_|  |_|____/ \____/|____/ \____/_/    \_\_|  \_\_____/
     """)
 
+    print("Creted by: " + green("Bomboclat Studios\n"))
     print("Welcome to BOMBOBOARD! Use one of these commands below to get started:\n" + cyan("game, help, sourcecode/repo, credits, exit/quit\n"))
 
 welcome()
@@ -408,7 +409,7 @@ while True:
         print(cyan("Kósa Péter"), gray("(KP)"))
         print("\nHere's a list of which roles we had, and what we contributed to the project:")
         print(magenta("BG: game design & questions\nRA: coding & questions\nJB: game design & questions\nKP: coding & UX design"))
-        print(green("\nWe hope you'll enjoy the game! :)"))
+        print(green("\nWe hope you'll enjoy the game! :)\n") + gray("Created by Bomboclat Studios"))
         input(blue("\nPress [ENTER] to go back..."))
         clear()
         welcome()
