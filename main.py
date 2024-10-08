@@ -196,6 +196,8 @@ def col(msg, color):
     return '\033[1;' + str(color) + 'm' + msg + '\033[0m'
 
 def choose_figure(player_id):
+    available_figures = ['*', '!', '/', '>', '<', '#', '$', '%', 'Σ']
+
     name = players[player_id]["display_name"]
 
     figure = None
@@ -331,6 +333,11 @@ players = {
 clear()
 
 def game_loop():
+    global available_figures
+    global all_figures
+    global players
+
+    available_figures = all_figures
     print(magenta("Welcome to BOMBOBOARD!\n"))
 
     choose_name("p1")
@@ -349,8 +356,8 @@ def game_loop():
             draw_board(board, players)
 
             position = player_data["pos"]
-            if position < 12: difficulty = "easy"
-            elif position < 22: difficulty = "medium"
+            if position+1 < 11: difficulty = "easy"
+            elif position+1 < 21: difficulty = "medium"
             else: difficulty = "hard"
 
             # ask a question
@@ -376,6 +383,10 @@ def game_loop():
                 print(green(f"{display_name} ({fig}) has won the game! GGs!"))
 
                 input(green('Press [ENTER] to exit... '))
+                
+                players["p1"]["pos"] = 0
+                players["p2"]["pos"] = 0
+
                 return
 
 def welcome():
