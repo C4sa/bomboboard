@@ -47,23 +47,112 @@ questions = {
             "choices": ["A) CD-ROM", "B) USB flash drive", "C) Blu-ray", "D) Punch card"],
             "answer": "D",
             "creator": "BG"
+        },
+        {
+            "question": "What type of cable is typically used to connect hard drives to the motherboard?",
+            "choices": ["A) SATA", "B) HDMI", "C) USB", "D) Ethernet"],
+            "answer": "A",
+            "creator": "KP"
+        },
+        {
+            "question": "Which component is responsible for connecting the CPU to RAM and other high-speed components?",
+            "choices": ["A) Southbridge", "B) FSB", "C) Power Supply", "D) PCI slot"],
+            "answer": "B",
+            "creator": "JB"
         }
+
     ],
+
     "medium": [
         {
             "question": "What does CPU stand for?",
             "choices": ["A) Central Performance Unit", "B) Central Processing Unit", "C) Central Processing Utility", "D) Core Processing Unit"],
             "answer": "B",
             "creator": "BG"
+        },
+        {
+            "question": "What is the function of the Southbridge on a motherboard?",
+            "choices": ["A) Connects the CPU to the RAM", "B) Manages the interaction between the CPU and the graphics card", "C) Handles communication with slower components like USB ports and hard drives", "D) Controls the cooling systems of the computer"],
+            "answer": "C",
+            "creator": "RA"
+        },
+        {
+            "question": "Which of the following is not a characteristic of an ATX motherboard?",
+            "choices": ["A) It is an Advanced Technology Extended form factor", "B) It is larger than the Micro-ATX", "C) It uses LPX low-profile design", "D) It is widely used in desktop computers"],
+            "answer": "C",
+            "creator": "BG"
+        },
+        {
+            "question": "What does the abbreviation 'EEPROM' stand for?",
+            "choices": ["A) Electrically Erasable Programmable Read-Only Memory", "B) Extended Erasable Programmable Read-Only Memory", "C) External Enhanced Programmable Random-Only Memory", "D) Embedded Eraseable Permanent Read-Only Memory"],
+            "answer": "A",
+            "creator": "KP"
+        },
+        {
+            "question": "What is the storage capacity of a typical 3.5\" floppy disk?",
+            "choices": ["A) 1.44 MB", "B) 720 KB", "C) 500 MB", "D) 2 GB"],
+            "answer": "A",
+            "creator": "JB"
+        },
+        {
+            "question": "What is the primary difference between RISC and CISC processors?",
+            "choices": ["A) RISC processors use a simplified instruction set, while CISC uses complex instructions", "B) CISC processors use reduced instructions, while RISC uses complex instructions", "C) RISC processors are used in desktop computers, CISC is used in smartphones", "D) There is no difference; both terms describe the same type of processor"],
+            "answer": "A",
+            "creator": "RA"
+        },
+        {
+            "question": "What is the main advantage of flash memory compared to magnetic storage?",
+            "choices": ["A) It requires continuous power to retain data", "B) It is slower but more durable", "C) It is faster and more energy-efficient", "D) It uses lasers to store data"],
+            "answer": "C",
+            "creator": "BG"
         }
+
     ],
+
     "hard": [
         {
             "question": "Out of these options, which one ISN't an abbreviation for a type of a memory card?",
             "choices": ["A) BIOS", "B) MMC", "C) SD", "D) CF"],
             "answer": "A",
             "creator": "RA"
+        },
+        {
+            "question": "Which of the following USB standards offers the fastest data transfer rate?",
+            "choices": ["A) USB 1.1 - 12 Mbps", "B) USB 2.0 - 480 Mbps", "C) USB 3.0 - 5 Gbps", "D) USB 2.0 - 12 Mbps"],
+            "answer": "C",
+            "creator": "KP"
+        },
+        {
+            "question": "What is the maximum cable length allowed for USB 2.0 without the use of repeaters?",
+            "choices": ["A) 5 meters", "B) 15 meters", "C) 3 meters", "D) 10 meters"],
+            "answer": "A",
+            "creator": "JB"
+        },
+        {
+            "question": "Which of the following statements about FireWire (IEEE 1394) is incorrect?",
+            "choices": ["A) FireWire can support up to 63 connected devices", "B) IEEE 1394b standard supports up to 800 Mbps data transfer speed", "C) FireWire requires external power for all connected devices", "D) Maximum cable length for IEEE 1394a is 4.5 meters"],
+            "answer": "C",
+            "creator": "RA"
+        },
+        {
+            "question": "Which port type is primarily used for connecting older printers and supports up to 8 Mbps transfer speeds?",
+            "choices": ["A) Serial Port", "B) USB 1.1", "C) Parallel Port", "D) HDMI"],
+            "answer": "C",
+            "creator": "BG"
+        },
+        {
+            "question": "What is the primary use of an SCSI controller in a computer system?",
+            "choices": ["A) Connecting wireless devices", "B) Managing audio output", "C) Connecting hard drives and tape drives", "D) Providing internet access via phone line"],
+            "answer": "C",
+            "creator": "KP"
+        },
+        {
+            "question": "How many USB devices can be connected to a single USB host controller using hubs?",
+            "choices": ["A) 64", "B) 127", "C) 32", "D) 255"],
+            "answer": "B",
+            "creator": "RA"
         }
+
     ]
 }
 
@@ -107,6 +196,8 @@ def col(msg, color):
     return '\033[1;' + str(color) + 'm' + msg + '\033[0m'
 
 def choose_figure(player_id):
+    available_figures = ['*', '!', '/', '>', '<', '#', '$', '%', 'Σ']
+
     name = players[player_id]["display_name"]
 
     figure = None
@@ -239,17 +330,22 @@ players = {
     }
 }
 
-print(magenta("Welcome to BOMBOBOARD!\n"))
-
-choose_name("p1")
-choose_figure("p1")
-
-choose_name("p2")
-choose_figure("p2")
-
 clear()
 
-def main_loop():
+def game_loop():
+    global available_figures
+    global all_figures
+    global players
+
+    available_figures = all_figures
+    print(magenta("Welcome to BOMBOBOARD!\n"))
+
+    choose_name("p1")
+    choose_figure("p1")
+
+    choose_name("p2")
+    choose_figure("p2")
+
     max_tile = len(board)
     
     while True:
@@ -260,8 +356,8 @@ def main_loop():
             draw_board(board, players)
 
             position = player_data["pos"]
-            if position < 12: difficulty = "easy"
-            elif position < 22: difficulty = "medium"
+            if position+1 < 11: difficulty = "easy"
+            elif position+1 < 21: difficulty = "medium"
             else: difficulty = "hard"
 
             # ask a question
@@ -287,6 +383,47 @@ def main_loop():
                 print(green(f"{display_name} ({fig}) has won the game! GGs!"))
 
                 input(green('Press [ENTER] to exit... '))
+                
+                players["p1"]["pos"] = 0
+                players["p2"]["pos"] = 0
+
                 return
 
-main_loop()
+def welcome():
+    print("""
+      ____   ____  __  __ ____   ____  ____   ____          _____  _____  
+     |  _ \ / __ \|  \/  |  _ \ / __ \|  _ \ / __ \   /\   |  __ \|  __ \ 
+     | |_) | |  | | \  / | |_) | |  | | |_) | |  | | /  \  | |__) | |  | |
+     |  _ <| |  | | |\/| |  _ <| |  | |  _ <| |  | |/ /\ \ |  _  /| |  | |
+     | |_) | |__| | |  | | |_) | |__| | |_) | |__| / ____ \| | \ \| |__| |
+     |____/ \____/|_|  |_|____/ \____/|____/ \____/_/    \_\_|  \_\_____/
+    """)
+
+    print("Creted by: " + green("Bomboclat Studios\n"))
+    print("Welcome to BOMBOBOARD! Use one of these commands below to get started:\n" + cyan("game, help, sourcecode/repo, credits, exit/quit\n"))
+
+welcome()
+
+while True:
+    cmd = input(">> ")
+
+    if cmd.lower() == "game": game_loop()
+    elif cmd.lower() == "help": print(green("[Help] Available commands: ") + "game, help, sourcecode/repo, credits, exit/quit\n")
+    elif cmd.lower() == "credits":
+        clear()
+        print(magenta("BOMBOBOARD - Credits"))
+        print("Welcome! This tiny virtual board game was created by four\nstudents! Namely:\n\n")
+        #print(cyan(f"Bárány Gábor {gray("BG")}\nRestyánszki Aurél {gray("RA")}\nJablonkai Botond {gray("JB")}\nKósa Péter (KP) {gray("KP")}\n"))
+        print(cyan("Bárány Gábor"), gray("(BG)"))
+        print(cyan("Restyánszki Aurél"), gray("(RA)"))
+        print(cyan("Jablonkai Botond"), gray("(JB)"))
+        print(cyan("Kósa Péter"), gray("(KP)"))
+        print("\nHere's a list of which roles we had, and what we contributed to the project:")
+        print(magenta("BG: game design & questions\nRA: coding & questions\nJB: game design & questions\nKP: coding & UX design"))
+        print(green("\nWe hope you'll enjoy the game! :)\n") + gray("Created by Bomboclat Studios"))
+        input(blue("\nPress [ENTER] to go back..."))
+        clear()
+        welcome()
+    elif cmd.lower() == "sourcecode" or cmd.lower() == "repo": print("Here's a link to the GitHub repository of this project (will be put on private sometime): https://github.com/C4sa/bomboboard\n")
+    elif cmd.lower() == "quit" or cmd.lower() == "exit": print(green("See you!")); exit(0)
+    else: print(red("Error: ") + "Unknown command!")
